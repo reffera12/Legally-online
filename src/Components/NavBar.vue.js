@@ -51,10 +51,10 @@ let __VLS_6;
 RouterLink;
 // @ts-ignore
 const __VLS_7 = __VLS_asFunctionalComponent1(__VLS_6, new __VLS_6({
-    to: "/about",
+    to: "/news",
 }));
 const __VLS_8 = __VLS_7({
-    to: "/about",
+    to: "/news",
 }, ...__VLS_functionalComponentArgsRest(__VLS_7));
 const { default: __VLS_11 } = __VLS_9.slots;
 var __VLS_9;
@@ -83,13 +83,29 @@ let __VLS_18;
 RouterLink;
 // @ts-ignore
 const __VLS_19 = __VLS_asFunctionalComponent1(__VLS_18, new __VLS_18({
-    to: "/contact",
+    to: "/about",
 }));
 const __VLS_20 = __VLS_19({
-    to: "/contact",
+    to: "/about",
 }, ...__VLS_functionalComponentArgsRest(__VLS_19));
 const { default: __VLS_23 } = __VLS_21.slots;
 var __VLS_21;
+__VLS_asFunctionalElement1(__VLS_intrinsics.li, __VLS_intrinsics.li)({
+    ...{ class: "nav-item" },
+});
+/** @type {__VLS_StyleScopedClasses['nav-item']} */ ;
+let __VLS_24;
+/** @ts-ignore @type { | typeof __VLS_components.RouterLink | typeof __VLS_components.RouterLink} */
+RouterLink;
+// @ts-ignore
+const __VLS_25 = __VLS_asFunctionalComponent1(__VLS_24, new __VLS_24({
+    to: "/contact",
+}));
+const __VLS_26 = __VLS_25({
+    to: "/contact",
+}, ...__VLS_functionalComponentArgsRest(__VLS_25));
+const { default: __VLS_29 } = __VLS_27.slots;
+var __VLS_27;
 __VLS_asFunctionalElement1(__VLS_intrinsics.div, __VLS_intrinsics.div)({
     ...{ class: "nav-balance" },
     'aria-hidden': "true",

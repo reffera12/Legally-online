@@ -11,13 +11,16 @@
           <RouterLink to="/">Начало</RouterLink>
         </li>
         <li class="nav-item">
-          <RouterLink to="/about">За нас</RouterLink>
+          <RouterLink to="/news">Новини и статии</RouterLink>
         </li>
         <li class="nav-item">
           <RouterLink to="/services">Услуги</RouterLink>
         </li>
         <li class="nav-item">
-          <RouterLink to="/contact">Контакт</RouterLink>
+          <RouterLink to="/about">За нас</RouterLink>
+        </li>
+        <li class="nav-item">
+          <RouterLink to="/contact">Контакти</RouterLink>
         </li>
       </ul>
 

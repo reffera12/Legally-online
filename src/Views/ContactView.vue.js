@@ -132,6 +132,24 @@ __VLS_asFunctionalElement1(__VLS_intrinsics.input)({
     name: "phone-number",
 });
 /** @type {__VLS_StyleScopedClasses['fs-input']} */ ;
+if (__VLS_ctx.requestType === 'consultation') {
+    __VLS_asFunctionalElement1(__VLS_intrinsics.div, __VLS_intrinsics.div)({
+        ...{ class: "fs-field" },
+    });
+    /** @type {__VLS_StyleScopedClasses['fs-field']} */ ;
+    __VLS_asFunctionalElement1(__VLS_intrinsics.label, __VLS_intrinsics.label)({
+        for: "calendar",
+        ...{ class: "fs-label" },
+    });
+    /** @type {__VLS_StyleScopedClasses['fs-label']} */ ;
+    __VLS_asFunctionalElement1(__VLS_intrinsics.input)({
+        ...{ class: "fs-input" },
+        type: "date",
+        id: "calendar",
+        name: "calendar",
+    });
+    /** @type {__VLS_StyleScopedClasses['fs-input']} */ ;
+}
 if (__VLS_ctx.requestType === 'other') {
     __VLS_asFunctionalElement1(__VLS_intrinsics.div, __VLS_intrinsics.div)({
         ...{ class: "fs-field col-span-full" },
@@ -189,7 +207,7 @@ __VLS_asFunctionalElement1(__VLS_intrinsics.button, __VLS_intrinsics.button)({
     ...{ onClick: (...[$event]) => {
             __VLS_ctx.consentExpanded = !__VLS_ctx.consentExpanded;
             // @ts-ignore
-            [requestType, requestType, requestType, consentExpanded, consentExpanded, consentExpanded,];
+            [requestType, requestType, requestType, requestType, consentExpanded, consentExpanded, consentExpanded,];
         } },
     type: "button",
     ...{ class: "fs-more-button" },
