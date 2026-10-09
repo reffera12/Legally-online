@@ -73,7 +73,7 @@ async function submitForm() {
       </p>
     </div>
 
-    <form class="fs-form fs-layout__2-column" @submit.prevent="submitForm">
+    <form class="fs-form fs-layout__2-column" @submit.prevent="submitForm" >
       <div class="fs-field">
         <label class="fs-label" for="request-type">Категория на запитването</label>
         <select v-model="form.requestType" class="fs-select" id="request-type" name="request-type" required>

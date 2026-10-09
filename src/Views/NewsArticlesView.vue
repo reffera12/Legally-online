@@ -1,22 +1,15 @@
 <script setup lang="ts">
 import { getArticles } from '@/services/articlesService'
 import { onMounted, ref } from 'vue'
-import placeholderImage from '@/assets/clarisse-meyer-jKU2NneZAbI-unsplash.jpg'
 
 type Article = {
   id: string | number
-  title?: string | null
-  excerpt?: string | null
-  summary?: string | null
+  title: string | null
+  slug: string
   description?: string | null
-  content?: string | null
-  body?: string | null
+  file_path: string | null
   published_at?: string | null
   created_at?: string | null
-  category?: string | null
-  image_url?: string | null
-  cover_image?: string | null
-  thumbnail_url?: string | null
 }
 
 const articles = ref<Article[]>([])
@@ -24,8 +17,7 @@ const isLoading = ref(true)
 const loadError = ref('')
 
 function getExcerpt(article: Article) {
-  const text = article.excerpt ?? article.summary ?? article.description ?? article.content ?? article.body ?? ''
-  const plainText = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+  const plainText = (article.description ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
 
   return plainText.length > 220 ? `${plainText.slice(0, 220).trimEnd()}...` : plainText
 }
@@ -73,24 +65,22 @@ onMounted(fetchArticles)
         Очаквайте скоро новини и статии.
       </p>
 
-      <article v-for="article in articles" :key="article.id" class="article-item">
-        <img
-          class="article-image"
-          :src="article.image_url || article.cover_image || article.thumbnail_url || placeholderImage"
-          :alt="article.title ? `Изображение към ${article.title}` : 'Изображение към статия'"
-          loading="lazy"
-        />
-        <div class="article-content">
-          <p class="article-meta">
-            <span v-if="article.category">{{ article.category }}</span>
-            <time v-if="getPublishedDate(article)" :datetime="article.published_at || article.created_at || undefined">
-              {{ getPublishedDate(article) }}
-            </time>
-          </p>
-          <h2>{{ article.title || 'Без заглавие' }}</h2>
-          <p class="article-excerpt">{{ getExcerpt(article) }}</p>
-        </div>
-      </article>
+      <RouterLink v-for="article in articles" :key="article.id"
+        :to="{ name: 'article-details', params: { slug: article.slug } }" class="article-link">
+        <article class="article-item">
+          <div class="article-content">
+            <p class="article-meta">
+              <time v-if="getPublishedDate(article)"
+                :datetime="article.published_at || article.created_at || undefined">
+                {{ getPublishedDate(article) }}
+              </time>
+            </p>
+            <h2>{{ article.title || 'Без заглавие' }}</h2>
+            <p class="article-excerpt">{{ getExcerpt(article) }}</p>
+            <span class="article-open">Прочети публикацията</span>
+          </div>
+        </article>
+      </RouterLink>
     </section>
   </main>
 </template>
@@ -134,20 +124,25 @@ h1 {
   max-width: 860px;
 }
 
-.article-item {
-  display: grid;
-  grid-template-columns: minmax(150px, 220px) minmax(0, 1fr);
-  gap: 1.5rem;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid #e5e1dd;
+.article-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
 }
 
-.article-image {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-  background: #e5e1dd;
+.article-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #e5e1dd;
+  transition: padding 160ms ease, background-color 160ms ease;
+}
+
+.article-link:hover .article-item,
+.article-link:focus-visible .article-item {
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+  background: rgba(255, 255, 255, 0.55);
 }
 
 .article-content {
@@ -178,6 +173,14 @@ h1 {
   line-height: 1.65;
 }
 
+.article-open {
+  display: inline-block;
+  margin-top: 0.8rem;
+  color: #8b5e3c;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
 .list-message {
   padding: 2rem 0;
 }
@@ -191,13 +194,5 @@ h1 {
     padding: 2.5rem 1rem 3.5rem;
   }
 
-  .article-item {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .article-image {
-    max-height: 220px;
-  }
 }
 </style>

@@ -1,12 +1,10 @@
 import { getArticles } from '@/services/articlesService';
 import { onMounted, ref } from 'vue';
-import placeholderImage from '@/assets/clarisse-meyer-jKU2NneZAbI-unsplash.jpg';
 const articles = ref([]);
 const isLoading = ref(true);
 const loadError = ref('');
 function getExcerpt(article) {
-    const text = article.excerpt ?? article.summary ?? article.description ?? article.content ?? article.body ?? '';
-    const plainText = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    const plainText = (article.description ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
     return plainText.length > 220 ? `${plainText.slice(0, 220).trimEnd()}...` : plainText;
 }
 function getPublishedDate(article) {
@@ -41,11 +39,13 @@ const __VLS_ctx = {
 let __VLS_components;
 let __VLS_intrinsics;
 let __VLS_directives;
+/** @type {__VLS_StyleScopedClasses['article-link']} */ ;
+/** @type {__VLS_StyleScopedClasses['article-item']} */ ;
+/** @type {__VLS_StyleScopedClasses['article-link']} */ ;
+/** @type {__VLS_StyleScopedClasses['article-item']} */ ;
 /** @type {__VLS_StyleScopedClasses['article-item']} */ ;
 /** @type {__VLS_StyleScopedClasses['list-message']} */ ;
 /** @type {__VLS_StyleScopedClasses['news-view']} */ ;
-/** @type {__VLS_StyleScopedClasses['article-item']} */ ;
-/** @type {__VLS_StyleScopedClasses['article-image']} */ ;
 __VLS_asFunctionalElement1(__VLS_intrinsics.main, __VLS_intrinsics.main)({
     ...{ class: "news-view" },
 });
@@ -91,18 +91,26 @@ else if (__VLS_ctx.articles.length === 0) {
     /** @type {__VLS_StyleScopedClasses['list-message']} */ ;
 }
 for (const [article] of __VLS_vFor((__VLS_ctx.articles))) {
-    __VLS_asFunctionalElement1(__VLS_intrinsics.article, __VLS_intrinsics.article)({
+    let __VLS_0;
+    /** @ts-ignore @type { | typeof __VLS_components.RouterLink | typeof __VLS_components.RouterLink} */
+    RouterLink;
+    // @ts-ignore
+    const __VLS_1 = __VLS_asFunctionalComponent1(__VLS_0, new __VLS_0({
         key: (article.id),
+        to: ({ name: 'article-details', params: { slug: article.slug } }),
+        ...{ class: "article-link" },
+    }));
+    const __VLS_2 = __VLS_1({
+        key: (article.id),
+        to: ({ name: 'article-details', params: { slug: article.slug } }),
+        ...{ class: "article-link" },
+    }, ...__VLS_functionalComponentArgsRest(__VLS_1));
+    /** @type {__VLS_StyleScopedClasses['article-link']} */ ;
+    const { default: __VLS_5 } = __VLS_3.slots;
+    __VLS_asFunctionalElement1(__VLS_intrinsics.article, __VLS_intrinsics.article)({
         ...{ class: "article-item" },
     });
     /** @type {__VLS_StyleScopedClasses['article-item']} */ ;
-    __VLS_asFunctionalElement1(__VLS_intrinsics.img)({
-        ...{ class: "article-image" },
-        src: (article.image_url || article.cover_image || article.thumbnail_url || __VLS_ctx.placeholderImage),
-        alt: (article.title ? `Изображение към ${article.title}` : 'Изображение към статия'),
-        loading: "lazy",
-    });
-    /** @type {__VLS_StyleScopedClasses['article-image']} */ ;
     __VLS_asFunctionalElement1(__VLS_intrinsics.div, __VLS_intrinsics.div)({
         ...{ class: "article-content" },
     });
@@ -111,10 +119,6 @@ for (const [article] of __VLS_vFor((__VLS_ctx.articles))) {
         ...{ class: "article-meta" },
     });
     /** @type {__VLS_StyleScopedClasses['article-meta']} */ ;
-    if (article.category) {
-        __VLS_asFunctionalElement1(__VLS_intrinsics.span, __VLS_intrinsics.span)({});
-        (article.category);
-    }
     if (__VLS_ctx.getPublishedDate(article)) {
         __VLS_asFunctionalElement1(__VLS_intrinsics.time, __VLS_intrinsics.time)({
             datetime: (article.published_at || article.created_at || undefined),
@@ -128,8 +132,15 @@ for (const [article] of __VLS_vFor((__VLS_ctx.articles))) {
     });
     /** @type {__VLS_StyleScopedClasses['article-excerpt']} */ ;
     (__VLS_ctx.getExcerpt(article));
+    __VLS_asFunctionalElement1(__VLS_intrinsics.span, __VLS_intrinsics.span)({
+        ...{ class: "article-open" },
+    });
+    /** @type {__VLS_StyleScopedClasses['article-open']} */ ;
     // @ts-ignore
-    [isLoading, loadError, loadError, articles, articles, placeholderImage, getPublishedDate, getPublishedDate, getExcerpt,];
+    [isLoading, loadError, loadError, articles, articles, getPublishedDate, getPublishedDate, getExcerpt,];
+    var __VLS_3;
+    // @ts-ignore
+    [];
 }
 // @ts-ignore
 [];

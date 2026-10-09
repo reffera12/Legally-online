@@ -1,6 +1,52 @@
+import { supabase } from '@/utils/supabase';
 import { ref } from 'vue';
-const requestType = ref('general');
 const consentExpanded = ref(false);
+const form = ref({
+    requestType: 'general',
+    subject: '',
+    name: '',
+    email: '',
+    phone: '',
+    preferredDate: '',
+    details: '',
+    consent: false
+});
+const loading = ref(false);
+const success = ref(false);
+const errorMessage = ref('');
+async function submitForm() {
+    loading.value = true;
+    success.value = false;
+    errorMessage.value = '';
+    const { data, error } = await supabase.functions.invoke('resend-email', {
+        body: {
+            name: form.value.name,
+            email: form.value.email,
+            phone: form.value.phone,
+            requestType: form.value.requestType,
+            title: form.value.subject,
+            preferredDate: form.value.preferredDate,
+            details: form.value.details
+        }
+    });
+    loading.value = false;
+    if (error) {
+        console.error(error);
+        errorMessage.value = 'Възникна грешка при изпращането.';
+        return;
+    }
+    success.value = true;
+    form.value = {
+        requestType: 'general',
+        subject: '',
+        name: '',
+        email: '',
+        phone: '',
+        preferredDate: '',
+        details: '',
+        consent: false
+    };
+}
 const __VLS_ctx = {
     ...{},
     ...{},
@@ -25,10 +71,8 @@ __VLS_asFunctionalElement1(__VLS_intrinsics.p, __VLS_intrinsics.p)({
 });
 /** @type {__VLS_StyleScopedClasses['contact-intro__text']} */ ;
 __VLS_asFunctionalElement1(__VLS_intrinsics.form, __VLS_intrinsics.form)({
-    action: "https://formspree.io/f/{FORM_ID}",
+    ...{ onSubmit: (__VLS_ctx.submitForm) },
     ...{ class: "fs-form fs-layout__2-column" },
-    target: "_top",
-    method: "POST",
 });
 /** @type {__VLS_StyleScopedClasses['fs-form']} */ ;
 /** @type {__VLS_StyleScopedClasses['fs-layout__2-column']} */ ;
@@ -42,7 +86,7 @@ __VLS_asFunctionalElement1(__VLS_intrinsics.label, __VLS_intrinsics.label)({
 });
 /** @type {__VLS_StyleScopedClasses['fs-label']} */ ;
 __VLS_asFunctionalElement1(__VLS_intrinsics.select, __VLS_intrinsics.select)({
-    value: (__VLS_ctx.requestType),
+    value: (__VLS_ctx.form.requestType),
     ...{ class: "fs-select" },
     id: "request-type",
     name: "request-type",
@@ -64,22 +108,18 @@ __VLS_asFunctionalElement1(__VLS_intrinsics.div, __VLS_intrinsics.div)({
 /** @type {__VLS_StyleScopedClasses['fs-field']} */ ;
 __VLS_asFunctionalElement1(__VLS_intrinsics.label, __VLS_intrinsics.label)({
     ...{ class: "fs-label" },
-    for: "title",
+    for: "subject",
 });
 /** @type {__VLS_StyleScopedClasses['fs-label']} */ ;
-__VLS_asFunctionalElement1(__VLS_intrinsics.select, __VLS_intrinsics.select)({
-    ...{ class: "fs-select" },
-    id: "title",
-    name: "title",
+__VLS_asFunctionalElement1(__VLS_intrinsics.input)({
+    ...{ class: "fs-input" },
+    id: "subject",
+    name: "subject",
+    placeholder: "Напр. Консултация по гражданско право",
     required: true,
 });
-/** @type {__VLS_StyleScopedClasses['fs-select']} */ ;
-__VLS_asFunctionalElement1(__VLS_intrinsics.option, __VLS_intrinsics.option)({
-    value: "mr",
-});
-__VLS_asFunctionalElement1(__VLS_intrinsics.option, __VLS_intrinsics.option)({
-    value: "ms",
-});
+(__VLS_ctx.form.subject);
+/** @type {__VLS_StyleScopedClasses['fs-input']} */ ;
 __VLS_asFunctionalElement1(__VLS_intrinsics.div, __VLS_intrinsics.div)({
     ...{ class: "fs-field" },
 });
@@ -95,6 +135,7 @@ __VLS_asFunctionalElement1(__VLS_intrinsics.input)({
     name: "name",
     required: true,
 });
+(__VLS_ctx.form.name);
 /** @type {__VLS_StyleScopedClasses['fs-input']} */ ;
 __VLS_asFunctionalElement1(__VLS_intrinsics.div, __VLS_intrinsics.div)({
     ...{ class: "fs-field" },
@@ -116,6 +157,7 @@ __VLS_asFunctionalElement1(__VLS_intrinsics.input)({
     title: "Моля, въведете валиден имейл адрес (пример: name@example.com).",
     required: true,
 });
+(__VLS_ctx.form.email);
 /** @type {__VLS_StyleScopedClasses['fs-input']} */ ;
 __VLS_asFunctionalElement1(__VLS_intrinsics.div, __VLS_intrinsics.div)({
     ...{ class: "fs-field" },
@@ -131,8 +173,9 @@ __VLS_asFunctionalElement1(__VLS_intrinsics.input)({
     id: "phone-number",
     name: "phone-number",
 });
+(__VLS_ctx.form.phone);
 /** @type {__VLS_StyleScopedClasses['fs-input']} */ ;
-if (__VLS_ctx.requestType === 'consultation') {
+if (__VLS_ctx.form.requestType === 'consultation') {
     __VLS_asFunctionalElement1(__VLS_intrinsics.div, __VLS_intrinsics.div)({
         ...{ class: "fs-field" },
     });
@@ -148,9 +191,10 @@ if (__VLS_ctx.requestType === 'consultation') {
         id: "calendar",
         name: "calendar",
     });
+    (__VLS_ctx.form.preferredDate);
     /** @type {__VLS_StyleScopedClasses['fs-input']} */ ;
 }
-if (__VLS_ctx.requestType === 'other') {
+if (__VLS_ctx.form.requestType === 'other') {
     __VLS_asFunctionalElement1(__VLS_intrinsics.div, __VLS_intrinsics.div)({
         ...{ class: "fs-field col-span-full" },
     });
@@ -162,10 +206,11 @@ if (__VLS_ctx.requestType === 'other') {
     });
     /** @type {__VLS_StyleScopedClasses['fs-label']} */ ;
     __VLS_asFunctionalElement1(__VLS_intrinsics.textarea, __VLS_intrinsics.textarea)({
+        value: (__VLS_ctx.form.details),
         ...{ class: "fs-textarea fs-textarea--short" },
-        id: "other-request-details",
-        name: "other-request-details",
-        required: (__VLS_ctx.requestType === 'other'),
+        id: "details",
+        name: "details",
+        required: (__VLS_ctx.form.requestType === 'other'),
         placeholder: "Кратко описание на темата...",
     });
     /** @type {__VLS_StyleScopedClasses['fs-textarea']} */ ;
@@ -189,6 +234,7 @@ __VLS_asFunctionalElement1(__VLS_intrinsics.input)({
     type: "checkbox",
     value: "consent",
 });
+(__VLS_ctx.form.consent);
 /** @type {__VLS_StyleScopedClasses['fs-checkbox']} */ ;
 __VLS_asFunctionalElement1(__VLS_intrinsics.div, __VLS_intrinsics.div)({});
 __VLS_asFunctionalElement1(__VLS_intrinsics.label, __VLS_intrinsics.label)({
@@ -207,7 +253,7 @@ __VLS_asFunctionalElement1(__VLS_intrinsics.button, __VLS_intrinsics.button)({
     ...{ onClick: (...[$event]) => {
             __VLS_ctx.consentExpanded = !__VLS_ctx.consentExpanded;
             // @ts-ignore
-            [requestType, requestType, requestType, requestType, consentExpanded, consentExpanded, consentExpanded,];
+            [submitForm, form, form, form, form, form, form, form, form, form, form, form, consentExpanded, consentExpanded, consentExpanded,];
         } },
     type: "button",
     ...{ class: "fs-more-button" },
